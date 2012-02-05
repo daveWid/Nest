@@ -2,7 +2,7 @@
 
 namespace Nest\Renderer;
 
-include \Nest\Core::get_vendor("markdown".DIRECTORY_SEPARATOR."markdown");
+include \Nest\Core::find_file("vendor", "markdown".DIRECTORY_SEPARATOR."markdown");
 
 /**
  * Markdown Renderer
