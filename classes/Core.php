@@ -176,7 +176,7 @@ class Core
 		{
 			// If the default error file, the change to markdown and find the file
 			$this->renderer = new \Nest\Renderer\Markdown;
-			return static::find_file("views", "error.md");
+			return static::find_file("views", "error", ".md");
 		}
 	}
 
