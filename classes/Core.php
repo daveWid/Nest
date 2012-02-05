@@ -118,15 +118,11 @@ class Core
 	 */
 	private function render($file)
 	{
-		// View data
 		$data = array(
-			'content' => $this->renderer->render(file_get_contents($file))
+			'content' => $this->renderer->render(file_get_contents($file)),
 		);
 
-		// Import the view variables to local namespace
 		extract($data, EXTR_SKIP);
-
-		// Capture the view output
 		ob_start();
 
 		try
@@ -135,14 +131,10 @@ class Core
 		}
 		catch (Exception $e)
 		{
-			// Delete the output buffer
 			ob_end_clean();
-
-			// Re-throw the exception
 			throw $e;
 		}
 
-		// Get the captured output and close the buffer
 		return ob_get_clean();
 	}
 
