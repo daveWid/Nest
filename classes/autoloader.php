@@ -22,6 +22,8 @@ class Autoloader
 	 */
 	public function autoload($class)
 	{
+		$class = ltrim($class, "\\");
+
 		if (preg_match('/^Nest/i', $class) !== 1)
 		{
 			return; // Only autoload classes in this library
