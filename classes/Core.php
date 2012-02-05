@@ -13,6 +13,11 @@ namespace Nest;
 class Core
 {
 	/**
+	 * @var string The base url for all files on the site.
+	 */
+	public static $base_url;
+
+	/**
 	 * @var string The path to the vendor folder.
 	 */
 	private static $library_path = null;
@@ -78,6 +83,8 @@ class Core
 		$this->public_path = dirname($path).DIRECTORY_SEPARATOR;
 		$this->wiki_path = $this->public_path."_wiki".DIRECTORY_SEPARATOR;
 		$this->config = $config;
+
+		static::$base_url = $this->config->base_url;
 
 		$renderer = "\\Nest\\Renderer\\".$config->renderer;
 		$this->renderer = new $renderer;
