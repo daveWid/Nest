@@ -166,18 +166,16 @@ class Core
 	 */
 	private function get_error()
 	{
-		$wiki = $this->wiki_path."error".$this->config->extension;
+		$path = $this->wiki_path."error".$this->config->extension;
 		
-		if (is_file($wiki))
-		{
-			return $wiki;
-		}
-		else
+		if ( ! is_file($path))
 		{
 			// If the default error file, the change to markdown and find the file
 			$this->renderer = new \Nest\Renderer\Markdown;
-			return static::find_file("views", "error", ".md");
+			$path = static::find_file("views", "error", ".md");
 		}
+
+		return $path;
 	}
 
 }
