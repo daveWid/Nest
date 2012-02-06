@@ -23,6 +23,17 @@ class Core
 	private static $library_path = null;
 
 	/**
+	 * Gets a url for an asset.
+	 *
+	 * @param  string $path The url of the asset to find
+	 * @return string       The url with the base path prepended
+	 */
+	public static function url($path = "")
+	{
+		return static::$base_url.$path;
+	}
+
+	/**
 	 * Finds a file from the library file sytstem.
 	 *
 	 * @param  string $dir   The directory to look in
