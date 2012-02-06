@@ -1,12 +1,12 @@
 <?php
 
 // Where is the Nest bootstrap.php file at?
-$system = "../../nest";
+$system = "/usr/lib/php/Nest";
 
 $config = array(
 	'renderer' => "Markdown",
 	'extension' => ".md",
-	'base_url' => "/wiki/"
+	'base_url' => "/"
 );
 
 /**
