@@ -22,7 +22,9 @@ $config = array(
  */
 $system_path = (substr($system, 0, 1) === DIRECTORY_SEPARATOR) ?
 	$system :
-	realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.$system).DIRECTORY_SEPARATOR;
+	realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.$system);
+
+$system_path = rtrim($system_path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 
 // Bootsrap it
 include $system_path."bootstrap.php";
