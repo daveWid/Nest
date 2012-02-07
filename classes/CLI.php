@@ -181,42 +181,6 @@ class CLI
 	}
 
 	/**
-	 * Iterataes over the from directory and saves html files in the from directory.
-	 *
-	 * @param string $from  The source directory
-	 * @param string $to    The ouput directory
-	 */
-	private function generate_files($from, $to)
-	{
-		$di = new \DirectoryIterator($from);
-		foreach ($di as $entity)
-		{
-			if ( ! $entity->isDot())
-			{
-				if ($entity->isDir())
-				{
-					var_dump($entity);
-					$relative = $entity->getFilename().DIRECTORY_SEPARATOR;
-					$to .= $relative;
-					$from .= $relative;
-
-					if ( ! is_dir($to))
-					{
-						$this->log("Creating directory at {$to}");
-						mkdir($to, 0755);
-					}
-
-					$this->generate_files($from, $to);
-				}
-				else
-				{
-					$this->log("Adding file {$entity->getFilename()}");
-				}
-			}
-		}
-	}
-
-	/**
 	 * The Nest help menu.
 	 */
 	private function help()
