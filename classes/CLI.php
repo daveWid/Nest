@@ -161,7 +161,7 @@ class CLI
 			fclose($fp);
 		}
 
-		$this->log("Site Generated");
+		$this->log("Site Generated", true);
 	}
 
 	/**
