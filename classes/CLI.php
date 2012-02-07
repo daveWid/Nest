@@ -110,10 +110,12 @@ class CLI
 			{
 				if ($entity->isDir())
 				{
-					$name = $entity->getFilename();
-					$this->log("Creating Directory: {$name}");
-					$path = $destination.$name.DIRECTORY_SEPARATOR;
-					mkdir($path, 0755);
+					$path = $destination.$entity->getFilename().DIRECTORY_SEPARATOR;
+					if ( ! is_dir($path))
+					{
+						$this->log("Creating Directory: {$name}");
+						mkdir($path, 0755);
+					}
 
 					// Do a recursive copy
 					$this->cp_r($source.$name.DIRECTORY_SEPARATOR, $path);
