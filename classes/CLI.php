@@ -26,6 +26,7 @@ class CLI
 	private $action_list = array(
 		'create',
 		'generate',
+		'clean',
 		'help'
 	);
 
@@ -181,6 +182,59 @@ class CLI
 	}
 
 	/**
+	 * Cleans out all of the files that were created by a generate call.
+	 */
+	private function clean()
+	{
+		$this->log("Cleaning started");
+
+		$config = parse_ini_file($this->directory."config.ini");
+		$nest = new \Nest\Core($this->directory, new \Nest\Config($config));
+
+		// Find all of the source files
+		$files = $this->find_files($nest->wiki_path(), "/{$config['extension']}$/");
+
+		// Keep a list of all directories
+		$directories = array();
+
+		foreach ($files as $entity)
+		{
+			$name = str_replace($nest->wiki_path(), "", $entity->getPathname());
+			$name = str_replace($config['extension'], ".html", $name);
+
+			$filename = $this->directory.$name;
+			$dir = dirname($filename).DIRECTORY_SEPARATOR;
+
+			if ( ! in_array($dir, $directories))
+			{
+				$directories[] = $dir;
+			}
+
+			if (is_file($filename))
+			{
+				$this->log("Removing file: {$filename}");
+				unlink($filename);
+			}
+		}
+
+		// Now cleanup the directories
+		foreach ($directories as $dir)
+		{
+			$path = str_replace($this->directory, "", $dir);
+			if ($path !== "")
+			{
+				if (is_dir($dir))
+				{
+					$this->log("Removing directory: {$dir}");
+					rmdir($dir);
+				}
+			}
+		}
+
+		$this->log("Cleanup completed", true);
+	}
+
+	/**
 	 * The Nest help menu.
 	 */
 	private function help()
@@ -192,7 +246,8 @@ class CLI
 		$this->log("nest [create|generate|help] [flags]");
 		$this->log("---------------------");
 		$this->log("create:   Creates a new Nest site");
-		$this->log("generate: Generates a static html version of the site.");
+		$this->log("generate: Generates a static html version of the site");
+		$this->log("clean:    Cleans up a generated site");
 		$this->log("help:     This help menu");
 		$this->log("---------------------");
 		$this->log("Flags");
