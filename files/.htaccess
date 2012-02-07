@@ -10,6 +10,12 @@ RewriteBase /
 	Deny From All
 </Files>
 
+# Protect the config file
+<Files config.ini>
+	Order Deny,Allow
+	Deny From All
+</Files>
+
 # Allow any files or directories that exist to be displayed directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

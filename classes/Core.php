@@ -91,7 +91,7 @@ class Core
 	 */
 	public function __construct($path, \Nest\Config $config)
 	{
-		$this->public_path = dirname($path).DIRECTORY_SEPARATOR;
+		$this->public_path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 		$this->wiki_path = $this->public_path."_wiki".DIRECTORY_SEPARATOR;
 		$this->config = $config;
 
@@ -104,13 +104,15 @@ class Core
 	/**
 	 * Runs the actions that builds the page.
 	 *
+	 * @param  string   The path to execute (if null, then path_info is used)
 	 * @return string   The html to display.
 	 */
-	public function execute()
+	public function execute($file = null)
 	{
-		$file = (isset($_SERVER['PATH_INFO'])) ?
-			$_SERVER['PATH_INFO'] :
-			"/" ;
+		if ($file === null)
+		{
+			$file = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : "/" ;
+		}
 
 		if (substr($file, -1) === "/")
 		{
@@ -126,6 +128,26 @@ class Core
 
 		// Now we need the layout...
 		return $this->render($path);
+	}
+
+	/**
+	 * Gets the full path to the docroot (public folder).
+	 *
+	 * @return string
+	 */
+	public function docroot()
+	{
+		return $this->public_path;
+	}
+
+	/**
+	 * Gets the full path to the "_wiki" folder that holds to pages.
+	 *
+	 * @return string
+	 */
+	public function wiki_path()
+	{
+		return $this->wiki_path;
 	}
 
 	/**

@@ -1,13 +1,7 @@
 <?php
 
 // Where is the Nest bootstrap.php file at?
-$system = "/usr/lib/php/Nest";
-
-$config = array(
-	'renderer' => "Markdown",
-	'extension' => ".md",
-	'base_url' => "/"
-);
+$system = "../../nest";
 
 /**
  * Configuration is done,
@@ -20,6 +14,8 @@ $config = array(
  * If this is a absolute path, then just roll with it
  * Otherwise do some realpath magic on it to get the full server path
  */
+$config = parse_ini_file("config.ini");
+
 $system_path = (substr($system, 0, 1) === DIRECTORY_SEPARATOR) ?
 	$system :
 	realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.$system);
@@ -30,5 +26,5 @@ $system_path = rtrim($system_path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 include $system_path."bootstrap.php";
 
 // And rock and roll!
-$nest = new \Nest\Core(__FILE__, new \Nest\Config($config));
+$nest = new \Nest\Core(dirname(__FILE__), new \Nest\Config($config));
 echo $nest->execute();

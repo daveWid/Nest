@@ -134,6 +134,84 @@ class CLI
 	private function generate()
 	{
 		$this->log("Generating Site");
+
+		$config = parse_ini_file($this->directory."config.ini");
+		$nest = new \Nest\Core($this->directory, new \Nest\Config($config));
+
+		// Find all of the source files
+		$files = $this->find_files($nest->wiki_path(), "/{$config['extension']}$/");
+
+		foreach ($files as $entity)
+		{
+			$name = str_replace($nest->wiki_path(), "", $entity->getPathname());
+			$name = str_replace($config['extension'], ".html", $name);
+
+			$filename = $this->directory.$name;
+			$dir = dirname($filename);
+
+			if ( ! is_dir($dir))
+			{
+				$this->log("Creating directory: {$dir}");
+				mkdir($dir, 0755);
+			}
+
+			$this->log("Saving file: {$name}");
+			$fp = fopen($filename, "w+");
+			fwrite($fp, $nest->execute($name));
+			fclose($fp);
+		}
+
+		$this->log("Site Generated");
+	}
+
+	/**
+	 * Uses the directory and regex pattern to find all files in a directory.
+	 *
+	 * @param  string $directory  The directory to search
+	 * @param  string $pattern    Regex pattern to use
+	 * @return \FileIterator
+	 */
+	private function find_files($directory, $pattern)
+	{
+		$recursive = new \RecursiveDirectoryIterator($directory);
+		$iterator = new \RecursiveIteratorIterator($recursive);
+		return new \RegexIterator($iterator, $pattern);
+	}
+
+	/**
+	 * Iterataes over the from directory and saves html files in the from directory.
+	 *
+	 * @param string $from  The source directory
+	 * @param string $to    The ouput directory
+	 */
+	private function generate_files($from, $to)
+	{
+		$di = new \DirectoryIterator($from);
+		foreach ($di as $entity)
+		{
+			if ( ! $entity->isDot())
+			{
+				if ($entity->isDir())
+				{
+					var_dump($entity);
+					$relative = $entity->getFilename().DIRECTORY_SEPARATOR;
+					$to .= $relative;
+					$from .= $relative;
+
+					if ( ! is_dir($to))
+					{
+						$this->log("Creating directory at {$to}");
+						mkdir($to, 0755);
+					}
+
+					$this->generate_files($from, $to);
+				}
+				else
+				{
+					$this->log("Adding file {$entity->getFilename()}");
+				}
+			}
+		}
 	}
 
 	/**
