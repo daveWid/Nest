@@ -20,7 +20,7 @@ class Core
 	/**
 	 * @var string The base path for the library.
 	 */
-	private static $system_path = null;
+	public static $system_path = null;
 
 	/**
 	 * Gets a url for an asset.
@@ -71,7 +71,7 @@ class Core
 	/**
 	 * @var array  A list of supported renderers
 	 */
-	private $renderers = array(
+	public $renderers = array(
 		'php' => "\\Nest\\Renderer\\PHP",
 		'md' => "\\Nest\\Renderer\\Markdown",
 		'markdown' => "\\Nest\\Renderer\\Markdown",

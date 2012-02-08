@@ -142,13 +142,16 @@ class CLI
 		$config = parse_ini_file($this->directory."config.ini");
 		$nest = new \Nest\Core($this->directory, new \Nest\Config($config));
 
+		// Set the real system path for nest
+		$this->set_system_path($config['system_path']);
+
 		// Find all of the source files
-		$files = $this->find_files($nest->wiki_path(), "/{$config['extension']}$/");
+		$files = $this->find_files($nest->wiki_path(), "/.(".implode("|", array_keys($nest->renderers)).")$/");
 
 		foreach ($files as $entity)
 		{
 			$name = str_replace($nest->wiki_path(), "", $entity->getPathname());
-			$name = str_replace($config['extension'], ".html", $name);
+			$name = str_replace(".".$entity->getExtension(), ".html", $name);
 
 			$filename = $this->directory.$name;
 			$dir = dirname($filename);
@@ -193,7 +196,7 @@ class CLI
 		$nest = new \Nest\Core($this->directory, new \Nest\Config($config));
 
 		// Find all of the source files
-		$files = $this->find_files($nest->wiki_path(), "/{$config['extension']}$/");
+		$files = $this->find_files($nest->wiki_path(), "/.(".implode("|", array_keys($nest->renderers)).")$/");
 
 		// Keep a list of all directories
 		$directories = array();
@@ -201,7 +204,7 @@ class CLI
 		foreach ($files as $entity)
 		{
 			$name = str_replace($nest->wiki_path(), "", $entity->getPathname());
-			$name = str_replace($config['extension'], ".html", $name);
+			$name = str_replace(".".$entity->getExtension(), ".html", $name);
 
 			$filename = $this->directory.$name;
 			$dir = dirname($filename).DIRECTORY_SEPARATOR;
@@ -272,6 +275,21 @@ class CLI
 				$this->{$prop} = $value;
 			}
 		}
+	}
+
+	/**
+	 * Resets the system path for Nest since the cli doesn't run through the
+	 * front controller first.
+	 *
+	 * @param string $path  The specified config system path.
+	 */
+	private function set_system_path($path)
+	{
+		$path = (substr($path, 0, 1) === DIRECTORY_SEPARATOR) ?
+			$path :
+			realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.$path);
+
+		\Nest\Core::$system_path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 	}
 
 	/**
