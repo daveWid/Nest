@@ -13,23 +13,17 @@ include \Nest\Core::find_file("vendor", "markdown".DIRECTORY_SEPARATOR."markdown
 class Markdown extends \MarkdownExtra_Parser implements \Nest\Renderer
 {
 	/**
-	 * @param MarkdownExtra_Parser  The markdown instance to use when rendering the text
-	 */
-	private $md;
-
-	/**
 	 * Adds some extra flavor into the Markdown parser
 	 */
 	public function __construct()
 	{
+		parent::MarkdownExtra_Parser();
+
 		// doImage is 10, add image url just before
 		$this->span_gamut['doImageURL'] = 9;
 
 		// doLink is 20, add base url just before
 		$this->span_gamut['doBaseURL'] = 19;
-
-		parent::MarkdownExtra_Parser();
-		$this->md = $this;
 	}
 
 	/**
@@ -48,7 +42,7 @@ class Markdown extends \MarkdownExtra_Parser implements \Nest\Renderer
 			throw new \Nest\Exception("File Not Found: {$file}");
 		}
 
-		return $this->md->transform(file_get_contents($file));
+		return $this->transform(file_get_contents($file));
 	}
 
 	/**
