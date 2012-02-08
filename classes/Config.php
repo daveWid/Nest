@@ -16,14 +16,9 @@ class Config
 	public $base_url = "/";
 
 	/**
-	 * @var string  The name of the renderer.
+	 * @var string  The system url
 	 */
-	public $renderer = "Markdown";
-
-	/**
-	 * @var string  The extension to look for
-	 */
-	public $extension = ".md";
+	public $system_url = "";
 
 	/**
 	 * Creates a new configuration object

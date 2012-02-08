@@ -1,13 +1,4 @@
 <?php
-
-// Where is the Nest bootstrap.php file at?
-$system = "/usr/lib/php/Nest";
-
-/**
- * Configuration is done,
- * Don't modify below unless you really know what you are doing!
- */
-
 /**
  * Find the Nest system path
  *
@@ -16,14 +7,17 @@ $system = "/usr/lib/php/Nest";
  */
 $config = parse_ini_file("config.ini");
 
-$system_path = (substr($system, 0, 1) === DIRECTORY_SEPARATOR) ?
+$system_path = (substr($config['system_path'], 0, 1) === DIRECTORY_SEPARATOR) ?
 	$system :
-	realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.$system);
+	realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.$config['system_path']);
 
 $system_path = rtrim($system_path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 
 // Bootsrap it
 include $system_path."bootstrap.php";
+
+$config['system_path'] = $system_path;
+unset($system_path);
 
 // And rock and roll!
 $nest = new \Nest\Core(dirname(__FILE__), new \Nest\Config($config));

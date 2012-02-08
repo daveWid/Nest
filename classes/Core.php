@@ -18,9 +18,9 @@ class Core
 	public static $base_url;
 
 	/**
-	 * @var string The path to the vendor folder.
+	 * @var string The base path for the library.
 	 */
-	private static $library_path = null;
+	private static $system_path = null;
 
 	/**
 	 * Gets a url for an asset.
@@ -43,13 +43,8 @@ class Core
 	 */
 	public static function find_file($dir, $file, $ext = ".php")
 	{
-		if (static::$library_path === null)
-		{
-			static::$library_path = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR."..").DIRECTORY_SEPARATOR;
-		}
-
 		$found = false;
-		$path = static::$library_path.$dir.DIRECTORY_SEPARATOR.$file.$ext;
+		$path = static::$system_path.$dir.DIRECTORY_SEPARATOR.$file.$ext;
 		if (is_file($path))
 		{
 			$found = $path;
@@ -74,9 +69,14 @@ class Core
 	private $config;
 
 	/**
-	 * @var \Nest\Renderer The renderer to use for the file
+	 * @var array  A list of supported renderers
 	 */
-	private $renderer;
+	private $renderers = array(
+		'php' => "\\Nest\\Renderer\\PHP",
+		'md' => "\\Nest\\Renderer\\Markdown",
+		'markdown' => "\\Nest\\Renderer\\Markdown",
+		'textile' => "\\Nest\\Renderer\\Textile"
+	);
 
 	/**
 	 * @var string The name of the file that was requested to be loaded.
@@ -96,9 +96,7 @@ class Core
 		$this->config = $config;
 
 		static::$base_url = $this->config->base_url;
-
-		$renderer = "\\Nest\\Renderer\\".$config->renderer;
-		$this->renderer = new $renderer;
+		static::$system_path = $this->config->system_path;
 	}
 
 	/**
@@ -108,6 +106,31 @@ class Core
 	 * @return string   The html to display.
 	 */
 	public function execute($file = null)
+	{
+		$this->file_path = $this->locate_view($file) ?: $this->get_default("error", ".md");
+		$ext = pathinfo($this->file_path, PATHINFO_EXTENSION);
+
+		$renderer = new $this->renderers[$ext];
+		$content = $this->renderer->render($this->file_path);
+
+		// Switch the renderer to php if it isnt already
+		if ($ext !== "php")
+		{
+			$enderer = new \Nest\Renderer\PHP;
+		}
+
+		return $renderer->render($this->get_default("layout"), array(
+			'content' => $content
+		));
+	}
+
+	/**
+	 * Locates a view that is used as the main content.
+	 *
+	 * @param  string $file  The filename of the view to find
+	 * @return mixed         The string name of the file that was found OR Boolean false
+	 */
+	private function locate_view($file)
 	{
 		if ($file === null)
 		{
@@ -119,19 +142,12 @@ class Core
 			$file .= "index.html";
 		}
 
-		$this->file_path = preg_replace("/.html$/", $this->config->extension, ltrim($file, "/"));
+		$base = preg_replace("/.html$/", "", ltrim($file, "/"));
 
-		// See if the file is actually there
-		$path = (is_file($this->wiki_path.$this->file_path)) ?
-			$this->wiki_path.$this->file_path :
-			$this->get_error();
+		$pattern = $this->wiki_path().$base.".{".implode(",",array_keys($this->renderers))."}";
+		$found = glob($pattern, GLOB_BRACE);
 
-		// Now we need the layout...
-		$php = new \Nest\Renderer\PHP;
-
-		return $php->render($this->get_layout(), array(
-			'content' => $this->renderer->render($path)
-		));
+		return (empty($found)) ? false : $found[0];
 	}
 
 	/**
@@ -155,33 +171,21 @@ class Core
 	}
 
 	/**
-	 * Gets the path to the layout.
+	 * Gets the path for the default layout/error page.
 	 *
-	 * @return string  The path to the layout file
-	 */
-	private function get_layout()
-	{
-		$layout = $this->wiki_path."layout.php";
-
-		return (is_file($layout)) ?
-			$layout :
-			static::find_file("views", "layout");
-	}
-
-	/**
-	 * Gets the path to the error page
+	 * This looks in the _wiki directory first and if not found, grabs the file
+	 * from the system/views directory.
 	 *
-	 * @return string  Full server path to the error page.
+	 * @param string $filename  The filename to find
+	 * @param string            The full path
 	 */
-	private function get_error()
+	private function get_default($file, $ext = ".php")
 	{
-		$path = $this->wiki_path."error".$this->config->extension;
-		
+		$path = $this->wiki_path.$file.$ext;
+
 		if ( ! is_file($path))
 		{
-			// If the default error file, the change to markdown and find the file
-			$this->renderer = new \Nest\Renderer\Markdown;
-			$path = static::find_file("views", "error", ".md");
+			$path = static::find_file("views", $file, $ext);
 		}
 
 		return $path;
