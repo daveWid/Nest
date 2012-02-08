@@ -1,0 +1,11 @@
+<phpunit bootstrap="bootstrap.php" colors="true" verbose="true">
+	<testsuites>
+		<testsuite name="Nest Test Suite">
+			<directory>tests/</directory>
+		</testsuite>
+	</testsuites>
+
+	<logging>
+		<log type="coverage-html" target="coverage" charset="utf-8" />
+	</logging>
+</phpunit>

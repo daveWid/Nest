@@ -12,6 +12,9 @@
 				<!-- Exclude dev files that aren't needed -->
 				<exclude name="*.zip" />
 				<exclude name="build.xml" />
+				<exclude name="phpunit.xml" />
+				<exclude name="tests/" />
+				<exclude name="coverage/" />
 				<exclude name="nbproject/" />
 				<exclude name="**/.git/**" />
 				<exclude name="**/.git*" />
@@ -25,5 +28,10 @@
 				<exclude name="vendor/mustache/MustachLoader.php" />
 			</fileset>
 		</zip>
+	</target>
+
+	<!-- Run the phpunit tests -->
+	<target name="test">
+		<exec command="phpunit" passthru="true" checkreturn="true" />
 	</target>
 </project>
