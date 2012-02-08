@@ -13,8 +13,6 @@ interface Renderer
 	/**
 	 * Renders the source into HTML
 	 *
-	 * @throws \Nest\Exception
-	 *
 	 * @param  string $file  The path to the file to render
 	 * @param  array  $data  Any additional data to use when rendering
 	 * @return string        The rendered html output
