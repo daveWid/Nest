@@ -2,12 +2,12 @@
 
 Nest is a file-system driven wiki engine for PHP 5.3+.
 
-## That this Library is
+## That this library is
 
 I just wanted the ability to create a simple knowledge base in a wiki type style.
 I also wanted git to be able to track all of my changes.
 
-## What The Library is not
+## What this library is not
 
 I have no plans to make this a full fledged wiki system with access privileges or
 a web interface. If that is something you are looking for, then there are probably
@@ -66,7 +66,7 @@ wiki is not in the root of a site (_i.e. /wiki/_) you will need to change the
 
 **index.php**: The "controller" for the wiki. You won't have to do anything do this file.
 
-**config.ini*: The configuration file. This file will need to be edited to fit your
+**config.ini**: The configuration file. This file will need to be edited to fit your
 setup. Below is a list of options that can be set.
 
 Option | Description
@@ -87,18 +87,19 @@ Since wiki's might not always be at the root of the site, you can use `\Nest\Cor
 and pass in a url. So with a file at `css/style.css` you could do `\Nest\Core::url("css/style.css")`
 and that function will add the `base_url` configuration option to the beginning
 of the url. This way you can specify all paths relative to the root of the site and
-not have to worry about anything if you wiki gets moved.
+not have to worry about anything if your wiki gets moved.
 
 ## Custom Error
 
 You can also create a custom error page. Put this page in the `_wiki` directory
-named `errorEXTENSION` replacing EXTENSION with an extension of any supported renderer.
+named `error.EXT` replacing EXT with the extension of any supported renderer.
 
 ## Hacking
 
-Want to add a renderer or see some broken code? Please fork this repo and work off
-of the develop branch. When you get your feature implemented, the send those pull
-requests!
+Want to add a renderer or see some broken code? Please fork this repo and use
+the develop branch. When you get your feature implemented, the send those pull
+requests! Any pull requests that aren't applied to the develop branch won't be
+applied.
 
 -------
 
