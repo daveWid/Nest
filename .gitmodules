@@ -1,3 +1,6 @@
 [submodule "vendor/markdown"]
 	path = vendor/markdown
 	url = git://github.com/michelf/php-markdown.git
+[submodule "vendor/textile"]
+	path = vendor/textile
+	url = git://github.com/netcarver/textile.git
