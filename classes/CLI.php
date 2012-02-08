@@ -111,7 +111,8 @@ class CLI
 			{
 				if ($entity->isDir())
 				{
-					$path = $destination.$entity->getFilename().DIRECTORY_SEPARATOR;
+					$name = $entity->getFilename();
+					$path = $destination.$name.DIRECTORY_SEPARATOR;
 					if ( ! is_dir($path))
 					{
 						$this->log("Creating Directory: {$name}");
