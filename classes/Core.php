@@ -111,12 +111,12 @@ class Core
 		$ext = pathinfo($this->file_path, PATHINFO_EXTENSION);
 
 		$renderer = new $this->renderers[$ext];
-		$content = $this->renderer->render($this->file_path);
+		$content = $renderer->render($this->file_path);
 
 		// Switch the renderer to php if it isnt already
 		if ($ext !== "php")
 		{
-			$enderer = new \Nest\Renderer\PHP;
+			$renderer = new \Nest\Renderer\PHP;
 		}
 
 		return $renderer->render($this->get_default("layout"), array(
