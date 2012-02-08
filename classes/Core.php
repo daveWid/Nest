@@ -75,7 +75,8 @@ class Core
 		'php' => "\\Nest\\Renderer\\PHP",
 		'md' => "\\Nest\\Renderer\\Markdown",
 		'markdown' => "\\Nest\\Renderer\\Markdown",
-		'textile' => "\\Nest\\Renderer\\Textile"
+		'textile' => "\\Nest\\Renderer\\Textile",
+		'mustache' => "\\Nest\\Renderer\\Mustache"
 	);
 
 	/**
