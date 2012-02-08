@@ -23,7 +23,7 @@ to pull in linked submodules.
 git submodule update --init --recursive
 ```
 
-### Bash script
+## Bash script
 
 After you have all of the code you will need to link the cli script in your path
 somewhere.
@@ -51,23 +51,27 @@ You will want to navigate to the directory that you want to create your wiki in
 and run `nest create`. This will add some default files/directories to get you
 on your way.
 
-**_wiki**: This directory will hold all of your "pages" in the raw format.
+**_wiki**: This directory will hold all of your "pages" in the raw format. Below
+is a list of supported renderers
+
+Renderer | Extension
+---------|------------
+PHP      | .php
+Markdown | .md, .markdown
+Textile  | .textile
 
 **.htaccess**: This file turns on url rewriting and protects some files. If your
 wiki is not in the root of a site (_i.e. /wiki/_) you will need to change the
 `RewriteBase /` line to reflect that (`RewriteBase /wiki/`).
 
-**index.php**: The "controller" for the wiki. You will need to set the path to
-the nest files at the top and that is all. This path can be relative to the current
-file or an absolute path.
+**index.php**: The "controller" for the wiki. You won't have to do anything do this file.
 
 **config.ini*: The configuration file. This file will need to be edited to fit your
 setup. Below is a list of options that can be set.
 
 Option | Description
 -------|------------
-renderer | The name of the renderer class that will be use to build the pages
-extension | The file extension to search for when building the pages
+system_path | A path to the nest system. This path can be absolute or relative to the config file.
 base_url | The base url for the site. Default is "/", in our wiki example it would be "/wiki/"
 
 ## Creating a Layout
@@ -88,8 +92,7 @@ not have to worry about anything if you wiki gets moved.
 ## Custom Error
 
 You can also create a custom error page. Put this page in the `_wiki` directory
-named `errorEXTENSION` replacing EXTENSION with the extension you set in your
-config file.
+named `errorEXTENSION` replacing EXTENSION with an extension of any supported renderer.
 
 ## Hacking
 
