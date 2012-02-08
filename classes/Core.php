@@ -127,7 +127,11 @@ class Core
 			$this->get_error();
 
 		// Now we need the layout...
-		return $this->render($path);
+		$php = new \Nest\Renderer\PHP;
+
+		return $php->render($this->get_layout(), array(
+			'content' => $this->renderer->render($path)
+		));
 	}
 
 	/**
@@ -148,34 +152,6 @@ class Core
 	public function wiki_path()
 	{
 		return $this->wiki_path;
-	}
-
-	/**
-	 * Renders the content as a full html page.
-	 *
-	 * @param  string $file  The file path to the content to render
-	 * @return string        The rendered content
-	 */
-	private function render($file)
-	{
-		$data = array(
-			'content' => $this->renderer->render(file_get_contents($file)),
-		);
-
-		extract($data, EXTR_SKIP);
-		ob_start();
-
-		try
-		{
-			include $this->get_layout();
-		}
-		catch (Exception $e)
-		{
-			ob_end_clean();
-			throw $e;
-		}
-
-		return ob_get_clean();
 	}
 
 	/**
