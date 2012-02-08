@@ -29,7 +29,7 @@ class Textile extends \Textile implements \Nest\Renderer
 	 */
 	public function shelveURL($text)
 	{
-		if (preg_match("/^((https?):\/\/|\/)/", $text) === 0)
+		if (preg_match("/^((\w+:\/\/)|\/)/", $text) === 0)
 		{
 			$text = \Nest\Core::$base_url.$text;
 		}
