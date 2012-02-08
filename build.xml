@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Nest" default="package" basedir=".">
+	<!-- Set the version of Nest -->
+	<property name="version" value="0.3" />
+
+	<!-- Builds a package -->
+	<target name="package">
+		<zip destfile="${project.basedir}/nest-${version}.zip">
+			<fileset dir="${project.basedir}">
+				<include name="**/**"/>
+
+				<!-- Exclude dev files that aren't needed -->
+				<exclude name="*.zip" />
+				<exclude name="build.xml" />
+				<exclude name="nbproject/" />
+				<exclude name="**/.git/**" />
+				<exclude name="**/.git*" />
+				<exclude name="**/.DS_Store" />
+
+				<!-- Exclude a lot of the extra files in the vendor folders -->
+				<exclude name="vendor/textile/test/" />
+				<exclude name="vendor/mustache/bin/" />
+				<exclude name="vendor/mustache/examples/" />
+				<exclude name="vendor/mustache/test/" />
+				<exclude name="vendor/mustache/MustachLoader.php" />
+			</fileset>
+		</zip>
+	</target>
+</project>
