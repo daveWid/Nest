@@ -17,13 +17,13 @@ class Markdown extends \MarkdownExtra_Parser implements \Nest\Renderer
 	 */
 	public function __construct()
 	{
-		parent::MarkdownExtra_Parser();
-
 		// doImage is 10, add image url just before
 		$this->span_gamut['doImageURL'] = 9;
 
 		// doLink is 20, add base url just before
 		$this->span_gamut['doBaseURL'] = 19;
+
+		parent::MarkdownExtra_Parser();
 	}
 
 	/**
