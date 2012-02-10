@@ -103,12 +103,14 @@ class Core
 	/**
 	 * Runs the actions that builds the page.
 	 *
-	 * @param  string   The path to execute (if null, then path_info is used)
-	 * @return string   The html to display.
+	 * @param  string $file   The path to execute (null uses path_info)
+	 * @return string         The html to display.
 	 */
 	public function execute($file = null)
 	{
-		$this->file_path = $this->locate_view($file) ?: $this->get_default("error", ".md");
+		$this->file_path = $this->locate_view($file) ?:
+			$this->get_default("error", ".md");
+
 		$ext = pathinfo($this->file_path, PATHINFO_EXTENSION);
 
 		$renderer = new $this->renderers[$ext];
@@ -129,7 +131,7 @@ class Core
 	 * Locates a view that is used as the main content.
 	 *
 	 * @param  string $file  The filename of the view to find
-	 * @return mixed         The string name of the file that was found OR Boolean false
+	 * @return mixed         The (string) filename OR (boolean) false
 	 */
 	private function locate_view($file)
 	{
@@ -145,7 +147,8 @@ class Core
 
 		$base = preg_replace("/.html$/", "", ltrim($file, "/"));
 
-		$pattern = $this->wiki_path().$base.".{".implode(",",array_keys($this->renderers))."}";
+		$exts = implode(",", array_keys($this->renderers));
+		$pattern = $this->wiki_path().$base.".{".$exts."}";
 		$found = glob($pattern, GLOB_BRACE);
 
 		return (empty($found)) ? false : $found[0];
@@ -177,8 +180,9 @@ class Core
 	 * This looks in the _wiki directory first and if not found, grabs the file
 	 * from the system/views directory.
 	 *
-	 * @param string $filename  The filename to find
-	 * @param string            The full path
+	 * @param  string $file  The filen ame to find
+	 * @param  string $ext   The file extension
+	 * @return string        The full path
 	 */
 	private function get_default($file, $ext = ".php")
 	{

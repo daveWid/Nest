@@ -43,7 +43,7 @@ class Markdown extends \MarkdownExtra_Parser implements \Nest\Renderer
 	 *
 	 * URLs containing "://" are left untouched
 	 *
-	 * @param   string  span text
+	 * @param   string  $text  The text to check
 	 * @return  string
 	 */
 	public function doBaseURL($text)
@@ -57,7 +57,7 @@ class Markdown extends \MarkdownExtra_Parser implements \Nest\Renderer
 	 *
 	 * URLs containing "://" are left untouched
 	 *
-	 * @param   string  span text
+	 * @param   string  $text  The text to check
 	 * @return  string
 	 */
 	public function doImageURL($text)

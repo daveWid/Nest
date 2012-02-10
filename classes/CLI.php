@@ -146,7 +146,8 @@ class CLI
 		$this->set_system_path($config['system_path']);
 
 		// Find all of the source files
-		$files = $this->find_files($nest->wiki_path(), "/.(".implode("|", array_keys($nest->renderers)).")$/");
+		$pattern = "/.(".implode("|", array_keys($nest->renderers)).")$/";
+		$files = $this->find_files($nest->wiki_path(), $pattern);
 
 		foreach ($files as $entity)
 		{
@@ -196,7 +197,8 @@ class CLI
 		$nest = new \Nest\Core($this->directory, new \Nest\Config($config));
 
 		// Find all of the source files
-		$files = $this->find_files($nest->wiki_path(), "/.(".implode("|", array_keys($nest->renderers)).")$/");
+		$pattern = "/.(".implode("|", array_keys($nest->renderers)).")$/";
+		$files = $this->find_files($nest->wiki_path(), $pattern);
 
 		// Keep a list of all directories
 		$directories = array();
@@ -285,11 +287,13 @@ class CLI
 	 */
 	private function set_system_path($path)
 	{
-		$path = (substr($path, 0, 1) === DIRECTORY_SEPARATOR) ?
-			$path :
-			realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.$path);
+		$ds = DIRECTORY_SEPARATOR;
 
-		\Nest\Core::$system_path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+		$path = (substr($path, 0, 1) === $ds) ?
+			$path :
+			realpath(dirname(__FILE__).$ds.$path);
+
+		\Nest\Core::$system_path = rtrim($path, $ds).$ds;
 	}
 
 	/**
