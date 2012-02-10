@@ -14,7 +14,7 @@
 				<exclude name="build.xml" />
 				<exclude name="phpunit.xml" />
 				<exclude name="tests/" />
-				<exclude name="coverage/" />
+				<exclude name="reports/" />
 				<exclude name="nbproject/" />
 				<exclude name="**/.git/**" />
 				<exclude name="**/.git*" />
@@ -34,4 +34,26 @@
 	<target name="test">
 		<exec command="phpunit" passthru="true" checkreturn="true" />
 	</target>
+
+	<!-- Run PHP Mess Detector -->
+	<target name="md">
+		<phpmd file="${project.basedir}/classes">
+			<formatter type="html" usefile="true" outfile="${project.basedir}/reports/phpmd.html" />
+		</phpmd>
+	</target>
+
+	<!-- Run PHP Copy/Paste Detector -->
+	<target name="cpd">
+		<phpcpd file="${project.basedir}/classes">
+			<formatter type="pmd" outfile="${project.basedir}/reports/phpcpd.xml"/>
+		</phpcpd>
+	</target>
+
+	<!-- Run PHP Depend -->
+	<target name="depend">
+		<phpdepend file="${project.basedir}/classes">
+			<logger type="jdepend-xml" outfile="${project.basedir}/reports/jdepend.xml" />
+		</phpdepend>
+	</target>
+
 </project>
