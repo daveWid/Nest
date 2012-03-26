@@ -33,6 +33,7 @@ class Core
 	 * then the system will try and load config.ini from the docroot.
 	 *
 	 * @param string $path    The path to the public server folder
+	 * @param array  $params  Additional parameters to add to the layout
 	 */
 	public function __construct($path)
 	{
@@ -73,10 +74,10 @@ class Core
 	 * Runs the actions that builds the page.
 	 *
 	 * @param  string $file    The path to execute (null uses path_info)
-	 * @param  string $layout  The path to the template file to use.
+	 * @param  array  $params  Parameters to add to the layout.
 	 * @return string          The html to display.
 	 */
-	public function execute($file = null, $layout = "layout")
+	public function execute($file = null, $params = array())
 	{
 		if ($file === null)
 		{
@@ -85,13 +86,11 @@ class Core
 
 		// Get the page content first.
 		$page = $this->find_file($file);
-		$content = $this->render($page);
+		$params['content'] = $this->render($page);
 
 		// Now mix in into the layout and return
-		$layout = $this->find_file($layout);
-		return $this->render($layout, array(
-			'content' => $content
-		));
+		$layout = $this->find_file("layout");
+		return $this->render($layout, $params);
 	}
 
 	/**
