@@ -1,8 +1,6 @@
 <?php
 
-namespace Nest\Renderer;
-
-include \Nest\Core::find_file("vendor", "textile".DIRECTORY_SEPARATOR."classTextile");
+namespace Nest\Engine;
 
 /**
  * Textile Renderer.
@@ -11,7 +9,7 @@ include \Nest\Core::find_file("vendor", "textile".DIRECTORY_SEPARATOR."classText
  * @package  Nest
  * @author   Dave Widmer <dave@davewidmer.net>
  */
-class Textile extends \Textile implements \Nest\Renderer
+class Textile extends \Textile implements \Nest\Engine
 {
 	/**
 	 * Creates a new Textile renderer.

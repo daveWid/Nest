@@ -1,8 +1,6 @@
 <?php
 
-namespace Nest\Renderer;
-
-include \Nest\Core::find_file("vendor", "markdown".DIRECTORY_SEPARATOR."markdown");
+namespace Nest\Engine;
 
 /**
  * Markdown Renderer
@@ -10,7 +8,7 @@ include \Nest\Core::find_file("vendor", "markdown".DIRECTORY_SEPARATOR."markdown
  * @package  Nest
  * @author   Dave Widmer <dave@davewidmer.net>
  */
-class Markdown extends \MarkdownExtra_Parser implements \Nest\Renderer
+class Markdown extends \MarkdownExtra_Parser implements \Nest\Engine
 {
 	/**
 	 * Adds some extra flavor into the Markdown parser

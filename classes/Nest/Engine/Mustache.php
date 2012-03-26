@@ -1,8 +1,6 @@
 <?php
 
-namespace Nest\Renderer;
-
-include \Nest\Core::find_file("vendor", "mustache".DIRECTORY_SEPARATOR."Mustache");
+namespace Nest\Engine;
 
 /**
  * Mustache Renderer.
@@ -10,7 +8,7 @@ include \Nest\Core::find_file("vendor", "mustache".DIRECTORY_SEPARATOR."Mustache
  * @package  Nest
  * @author   Dave Widmer <dave@davewidmer.net>
  */
-class Mustache implements \Nest\Renderer
+class Mustache implements \Nest\Engine
 {
 	/**
 	 * @var \Mustache  The mustache renderer

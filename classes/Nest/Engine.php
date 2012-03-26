@@ -1,14 +1,14 @@
 <?php
 
-namespace Nest\Renderer;
+namespace Nest;
 
 /**
- * PHP Renderer
+ * An interface that all rendering engines must follow.
  *
  * @package  Nest
  * @author   Dave Widmer <dave@davewidmer.net>
  */
-class PHP implements \Nest\Renderer
+interface Engine
 {
 	/**
 	 * Renders the source into HTML
@@ -17,11 +17,5 @@ class PHP implements \Nest\Renderer
 	 * @param  mixed  $data  Any additional data to use when rendering
 	 * @return string        The rendered html output
 	 */
-	public function render($file, $data = array())
-	{
-		extract($data, EXTR_SKIP);
-		ob_start();
-		include $file;
-		return ob_get_clean();
-	}
+	public function render($file, $data = array());
 }
