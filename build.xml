@@ -1,92 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Nest" default="package" basedir=".">
 	<!-- Set the version of Nest -->
-	<property name="version" value="0.3" />
-	<property name="reportdir" value="${project.basedir}/reports" />
+	<property name="version" value="0.4.0" />
 
 	<!-- Builds a package -->
 	<target name="package">
-		<zip destfile="${project.basedir}/nest-${version}.zip">
+		<mkdir dir="${project.basedir}/package/${version}" />
+
+		<zip destfile="${project.basedir}/package/${version}/Nest.zip">
 			<fileset dir="${project.basedir}">
 				<include name="**/**"/>
 
 				<!-- Exclude dev files that aren't needed -->
-				<exclude name="*.zip" />
 				<exclude name="build.xml" />
 				<exclude name="phpunit.xml" />
-				<exclude name="tests/" />
+				<exclude name="tests/*Test.php" />
 				<exclude name="reports/" />
-				<exclude name="nbproject/" />
-				<exclude name="**/.git/**" />
+				<exclude name="package/" />
 				<exclude name="**/.git*" />
 				<exclude name="**/.DS_Store" />
-
-				<!-- Exclude a lot of the extra files in the vendor folders -->
-				<exclude name="vendor/textile/test/" />
-				<exclude name="vendor/mustache/bin/" />
-				<exclude name="vendor/mustache/examples/" />
-				<exclude name="vendor/mustache/test/" />
-				<exclude name="vendor/mustache/MustacheLoader.php" />
 			</fileset>
 		</zip>
-	</target>
-
-	<!-- Runs all of the reports -->
-	<target name="reports" depends="prep-reports,test,sniff,md,cpd,depend">
-		<echo message="Reports generated!" />
-	</target>
-
-	<!-- Adds a reports folder if one doesn't exist -->
-	<target name="prep-reports">
-		<if>
-			<available file="${reportdir}" type="dir" />
-			<else>
-				<mkdir dir="${reportdir}" />
-			</else>
-		</if>
-	</target>
-
-	<!-- Run the phpunit tests -->
-	<target name="test">
-		<exec command="phpunit" passthru="true" checkreturn="true" />
-	</target>
-
-	<!-- Run CodeSniffer -->
-	<target name="sniff">
-		<phpcodesniffer standard="Lits" showSniffs="true">
-			<fileset dir="${project.basedir}">
-				<include name="**/*.php" />
-				<exclude name="**/vendor/**" />
-				<exclude name="**/tests/**" />
-			</fileset>
-			<formatter type="default" usefile="false" />
-			<formatter type="checkstyle" outfile="${reportdir}/checkstyle.xml" />
-		</phpcodesniffer>
-	</target>
-
-	<!-- Run PHP Mess Detector -->
-	<target name="md">
-		<phpmd file="${project.basedir}/classes">
-			<formatter type="html" usefile="true" outfile="${reportdir}/phpmd.html" />
-		</phpmd>
-	</target>
-
-	<!-- Run PHP Copy/Paste Detector -->
-	<target name="cpd">
-		<phpcpd file="${project.basedir}/classes">
-			<formatter type="pmd" outfile="${reportdir}/phpcpd.xml"/>
-		</phpcpd>
-	</target>
-
-	<!-- Run PHP Depend -->
-	<target name="depend">
-		<phpdepend file="${project.basedir}/classes">
-			<logger type="jdepend-chart" outfile="${reportdir}/jdepend.svg" />
-			<logger type="jdepend-xml" outfile="${reportdir}/jdepend.xml" />
-			<logger type="overview-pyramid" outfile="${reportdir}/pyramid.svg" />
-			<logger type="phpunit-xml" outfile="${reportdir}/jdepend-phpunit.xml" />
-			<logger type="summary-xml" outfile="${reportdir}/summary.xml" />
-		</phpdepend>
 	</target>
 
 </project>
