@@ -70,7 +70,6 @@ class CLI
 	 */
 	public function run()
 	{		
-		// Default to the help screen...
 		if ($this->action === null)
 		{
 			$this->action = "help";
@@ -87,9 +86,8 @@ class CLI
 		$this->log("Creating Site at {$this->directory}");
 
 		// The source directory to copy
-		$source = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.
-			"..".DIRECTORY_SEPARATOR.
-			"files").DIRECTORY_SEPARATOR;
+		$segments = array(__DIR__,"..","..","tests","public");
+		$source = realpath(implode(DIRECTORY_SEPARATOR, $segments)).DIRECTORY_SEPARATOR;
 
 		$this->cp_r($source, $this->directory);
 
@@ -139,20 +137,22 @@ class CLI
 	{
 		$this->log("Generating Site");
 
-		$config = parse_ini_file($this->directory."config.ini");
-		$nest = new \Nest\Core($this->directory, new \Nest\Config($config));
-
-		// Set the real system path for nest
-		$this->set_system_path($config['system_path']);
+		$nest = new \Nest\Core($this->directory);
 
 		// Find all of the source files
-		$pattern = "/.(".implode("|", array_keys($nest->renderers)).")$/";
-		$files = $this->find_files($nest->wiki_path(), $pattern);
+		$pattern = "/.(".implode("|", array_keys($nest->get_engines())).")$/";
+		$files = $this->find_files($nest->get_wiki_path(), $pattern);
 
 		foreach ($files as $entity)
 		{
-			$name = str_replace($nest->wiki_path(), "", $entity->getPathname());
+			$name = str_replace($nest->get_wiki_path(), "", $entity->getPathname());
 			$name = str_replace(".".$entity->getExtension(), ".html", $name);
+
+			// Skip the layout file...
+			if ($name === "layout.html")
+			{
+				continue;
+			}
 
 			$filename = $this->directory.$name;
 			$dir = dirname($filename);
@@ -192,20 +192,18 @@ class CLI
 	private function clean()
 	{
 		$this->log("Cleaning started");
-
-		$config = parse_ini_file($this->directory."config.ini");
-		$nest = new \Nest\Core($this->directory, new \Nest\Config($config));
+		$nest = new \Nest\Core($this->directory);
 
 		// Find all of the source files
-		$pattern = "/.(".implode("|", array_keys($nest->renderers)).")$/";
-		$files = $this->find_files($nest->wiki_path(), $pattern);
+		$pattern = "/.(".implode("|", array_keys($nest->get_engines())).")$/";
+		$files = $this->find_files($nest->get_wiki_path(), $pattern);
 
 		// Keep a list of all directories
 		$directories = array();
 
 		foreach ($files as $entity)
 		{
-			$name = str_replace($nest->wiki_path(), "", $entity->getPathname());
+			$name = str_replace($nest->get_wiki_path(), "", $entity->getPathname());
 			$name = str_replace(".".$entity->getExtension(), ".html", $name);
 
 			$filename = $this->directory.$name;
@@ -277,23 +275,6 @@ class CLI
 				$this->{$prop} = $value;
 			}
 		}
-	}
-
-	/**
-	 * Resets the system path for Nest since the cli doesn't run through the
-	 * front controller first.
-	 *
-	 * @param string $path  The specified config system path.
-	 */
-	private function set_system_path($path)
-	{
-		$ds = DIRECTORY_SEPARATOR;
-
-		$path = (substr($path, 0, 1) === $ds) ?
-			$path :
-			realpath(dirname(__FILE__).$ds.$path);
-
-		\Nest\Core::$system_path = rtrim($path, $ds).$ds;
 	}
 
 	/**

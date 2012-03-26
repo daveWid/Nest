@@ -40,6 +40,36 @@ class Core
 	}
 
 	/**
+	 * Gets the full path to the docroot (public folder).
+	 *
+	 * @return string
+	 */
+	public function get_docroot()
+	{
+		return $this->docroot;
+	}
+
+	/**
+	 * Gets the full path to the "_wiki" folder that holds to pages.
+	 *
+	 * @return string
+	 */
+	public function get_wiki_path()
+	{
+		return $this->docroot."_wiki".DIRECTORY_SEPARATOR;
+	}
+
+	/**
+	 * The rendering engines you can use.
+	 *
+	 * @return array
+	 */
+	public function get_engines()
+	{
+		return $this->engines;
+	}
+
+	/**
 	 * Runs the actions that builds the page.
 	 *
 	 * @param  string $file    The path to execute (null uses path_info)
@@ -106,26 +136,6 @@ class Core
 		$engine = new $this->engines[$ext];
 
 		return $engine->render($path, $params);
-	}
-
-	/**
-	 * Gets the full path to the docroot (public folder).
-	 *
-	 * @return string
-	 */
-	public function get_docroot()
-	{
-		return $this->docroot;
-	}
-
-	/**
-	 * Gets the full path to the "_wiki" folder that holds to pages.
-	 *
-	 * @return string
-	 */
-	public function get_wiki_path()
-	{
-		return $this->docroot."_wiki".DIRECTORY_SEPARATOR;
 	}
 
 }
