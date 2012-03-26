@@ -7,7 +7,11 @@
 
 	<filter>
 		<blacklist>
-			<directory>vendor/</directory>
+			<directory suffix=".php">tests/</directory>
+			<file>classes/Markdown.php</file>
+			<file>classes/Mustache.php</file>
+			<file>classes/SplClassLoader.php</file>
+			<file>classes/Textile.php</file>
 		</blacklist>
 	</filter>
 

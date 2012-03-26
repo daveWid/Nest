@@ -15,7 +15,7 @@ class Core
 	/**
 	 * @var string The path to the document root for the project
 	 */
-	private $docroot;
+	private $docroot = null;
 
 	/**
 	 * @var array  A list of supported rendering engines
