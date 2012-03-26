@@ -1,9 +1,0 @@
-[submodule "vendor/markdown"]
-	path = vendor/markdown
-	url = git://github.com/michelf/php-markdown.git
-[submodule "vendor/textile"]
-	path = vendor/textile
-	url = git://github.com/netcarver/textile.git
-[submodule "vendor/mustache"]
-	path = vendor/mustache
-	url = git://github.com/bobthecow/mustache.php.git
