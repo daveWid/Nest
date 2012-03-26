@@ -1,7 +1,8 @@
 <?php
 
 // Setup autoloading
-include "classes".DIRECTORY_SEPARATOR."Autoloader.php";
+$path = __DIR__.DIRECTORY_SEPARATOR."classes".DIRECTORY_SEPARATOR;
+include $path."SplClassLoader.php";
 
-$autoload = new \Nest\Autoloader;
+$autoload = new SplClassLoader(null, $path);
 $autoload->register();
