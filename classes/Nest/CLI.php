@@ -141,11 +141,11 @@ class CLI
 
 		// Find all of the source files
 		$pattern = "/.(".implode("|", array_keys($nest->get_engines())).")$/";
-		$files = $this->find_files($nest->get_wiki_path(), $pattern);
+		$files = $this->find_files($nest->get_site_path(), $pattern);
 
 		foreach ($files as $entity)
 		{
-			$name = str_replace($nest->get_wiki_path(), "", $entity->getPathname());
+			$name = str_replace($nest->get_site_path(), "", $entity->getPathname());
 			$name = str_replace(".".$entity->getExtension(), ".html", $name);
 
 			// Skip the layout file...
@@ -196,14 +196,14 @@ class CLI
 
 		// Find all of the source files
 		$pattern = "/.(".implode("|", array_keys($nest->get_engines())).")$/";
-		$files = $this->find_files($nest->get_wiki_path(), $pattern);
+		$files = $this->find_files($nest->get_site_path(), $pattern);
 
 		// Keep a list of all directories
 		$directories = array();
 
 		foreach ($files as $entity)
 		{
-			$name = str_replace($nest->get_wiki_path(), "", $entity->getPathname());
+			$name = str_replace($nest->get_site_path(), "", $entity->getPathname());
 			$name = str_replace(".".$entity->getExtension(), ".html", $name);
 
 			$filename = $this->directory.$name;

@@ -50,13 +50,13 @@ class Core
 	}
 
 	/**
-	 * Gets the full path to the "_wiki" folder that holds to pages.
+	 * Gets the full path to the "_site" folder that holds to pages.
 	 *
 	 * @return string
 	 */
-	public function get_wiki_path()
+	public function get_site_path()
 	{
-		return $this->docroot."_wiki".DIRECTORY_SEPARATOR;
+		return $this->docroot."_site".DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -112,7 +112,7 @@ class Core
 		$base = preg_replace("/.html$/", "", ltrim($file, "/"));
 
 		$exts = implode(",", array_keys($this->engines));
-		$pattern = $this->get_wiki_path().$base.".{".$exts."}";
+		$pattern = $this->get_site_path().$base.".{".$exts."}";
 		$found = glob($pattern, GLOB_BRACE);
 
 		if (empty($found))
